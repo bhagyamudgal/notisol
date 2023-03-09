@@ -67,6 +67,20 @@ function useAuth() {
         });
     };
 
+    const refetchUser = async () => {
+        if (auth.isAuthenticated) {
+            const response = await getAuthenticatedUser();
+
+            if (response.success) {
+                setAuth((prevState) => {
+                    return { ...prevState, user: response.result };
+                });
+            } else {
+                logout();
+            }
+        }
+    };
+
     const logout = () => {
         try {
             localStorage.removeItem("authToken");
@@ -76,7 +90,7 @@ function useAuth() {
         }
     };
 
-    return { ...auth, setAuth, login, logout };
+    return { ...auth, setAuth, login, logout, refetchUser };
 }
 
 export default useAuth;

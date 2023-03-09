@@ -4,57 +4,192 @@ import {
     Box,
     Button,
     Checkbox,
-    Flex,
     FormControl,
+    FormErrorMessage,
     FormLabel,
     Input,
-    Select,
-    SelectField,
     Text,
     VStack,
 } from "@chakra-ui/react";
 import useAuth from "@/lib/hooks/useAuth";
+import { useState } from "react";
+import { Event } from "@/lib/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+    SubscribeForNotificationForm,
+    subscribeForNotificationFormSchema,
+} from "@/lib/validators/subscribeForNotification";
+import { useForm } from "react-hook-form";
+import {
+    showErrorToast,
+    showInfoToast,
+    showSuccessToast,
+} from "@/components/common/ToastNotification";
+import { useRecoilValue } from "recoil";
+import { solanaNetworkState } from "@/store/auth";
+import { subscribeForNotification } from "@/lib/utils/api/user";
 
 export default function Dashboard() {
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, user, refetchUser } = useAuth();
+
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const solanaNetwork = useRecoilValue(solanaNetworkState);
+
+    const defaultValues: Partial<SubscribeForNotificationForm> = {
+        solTransfer: true,
+        splTokenTransfer: true,
+        nftTransfer: true,
+    };
+
+    const {
+        handleSubmit,
+        register,
+        formState: { errors },
+    } = useForm<SubscribeForNotificationForm>({
+        resolver: zodResolver(subscribeForNotificationFormSchema),
+        defaultValues,
+    });
+
+    const submitHandler = async (data: SubscribeForNotificationForm) => {
+        setIsSubmitting(true);
+        try {
+            const events = [];
+
+            if (data.solTransfer) {
+                events.push(Event.SOL_TRANSFER);
+            }
+            if (data.splTokenTransfer) {
+                events.push(Event.TOKEN_TRANSFER);
+            }
+            if (data.nftTransfer) {
+                events.push(Event.NFT_TRANSFER);
+            }
+
+            if (events.length === 0) {
+                setIsSubmitting(false);
+                showInfoToast({
+                    id: "events-validation",
+                    description: "Please select at least 1 event!",
+                });
+                return;
+            }
+
+            const response = await subscribeForNotification({
+                email: data.email,
+                network: solanaNetwork,
+                events,
+            });
+
+            if (!response.success) {
+                throw new Error("Something went wrong while subscribing!");
+            }
+
+            refetchUser();
+
+            showSuccessToast({
+                id: "subscribe-notification",
+                description:
+                    "You have successfully subscribed to receive email notifications!",
+            });
+        } catch (error) {
+            console.error("submitHandler =>", error);
+            showErrorToast({
+                id: "subscribe-notification",
+                description:
+                    "Something went wrong while subscribing! Please try again.",
+            });
+        }
+        setIsSubmitting(false);
+    };
+
+    const unsubscribeHandler = async () => {
+        setIsSubmitting(true);
+        try {
+        } catch (error) {
+            console.error("unsubscribeHandler =>", error);
+        }
+        setIsSubmitting(false);
+    };
 
     const RenderDashboard = () => {
         if (isAuthenticated) {
-            return (
-                <Box maxW="md" mx="auto" bg="gray.700" p={6} rounded="md">
-                    <VStack spacing={4}>
-                        <FormControl>
-                            <FormLabel>Email Address</FormLabel>
-                            <Input
-                                type="email"
-                                placeholder="Please enter your email address"
-                            />
-                        </FormControl>
+            if (!user?.events || user?.events?.length === 0) {
+                return (
+                    <Box maxW="md" mx="auto" bg="gray.700" p={6} rounded="md">
+                        <VStack
+                            spacing={4}
+                            as="form"
+                            onSubmit={handleSubmit(submitHandler)}
+                            noValidate
+                        >
+                            <FormControl
+                                isInvalid={errors?.email ? true : false}
+                            >
+                                <FormLabel htmlFor="email">
+                                    Email Address
+                                </FormLabel>
+                                <Input
+                                    id="email"
+                                    type="email"
+                                    placeholder="Please enter your email address"
+                                    {...register("email")}
+                                />
+                                <FormErrorMessage>
+                                    {errors?.email?.message}
+                                </FormErrorMessage>
+                            </FormControl>
 
-                        <FormControl>
-                            <FormLabel>Events Type</FormLabel>
+                            <FormControl>
+                                <FormLabel>Events Type</FormLabel>
 
-                            <Box>
-                                <Checkbox defaultChecked={true}>
-                                    SOL Transfer
-                                </Checkbox>
-                            </Box>
-                            <Box>
-                                <Checkbox defaultChecked={true}>
-                                    SPL Token Transfer
-                                </Checkbox>
-                            </Box>
-                            <Box>
-                                <Checkbox defaultChecked={true}>
-                                    NFT Transfer
-                                </Checkbox>
-                            </Box>
-                        </FormControl>
+                                <Box>
+                                    <Checkbox
+                                        id="solTransfer"
+                                        {...register("solTransfer")}
+                                    >
+                                        SOL Transfer
+                                    </Checkbox>
+                                </Box>
+                                <Box>
+                                    <Checkbox
+                                        id="splTokenTransfer"
+                                        {...register("splTokenTransfer")}
+                                    >
+                                        SPL Token Transfer
+                                    </Checkbox>
+                                </Box>
+                                <Box>
+                                    <Checkbox
+                                        id="nftTransfer"
+                                        {...register("nftTransfer")}
+                                    >
+                                        NFT Transfer
+                                    </Checkbox>
+                                </Box>
+                            </FormControl>
 
-                        <Button>Send me notifications</Button>
-                    </VStack>
-                </Box>
-            );
+                            <Button type="submit" isLoading={isSubmitting}>
+                                Send me notifications
+                            </Button>
+                        </VStack>
+                    </Box>
+                );
+            } else {
+                return (
+                    <Box maxW="md" mx="auto" bg="gray.700" p={6} rounded="md">
+                        <VStack spacing={4}>
+                            <Text>You have subscribed for notifications!</Text>
+
+                            <Button
+                                onClick={unsubscribeHandler}
+                                isLoading={isSubmitting}
+                            >
+                                Unsubscribe
+                            </Button>
+                        </VStack>
+                    </Box>
+                );
+            }
         } else {
             return (
                 <Text fontSize="lg" align="center" fontWeight="medium">

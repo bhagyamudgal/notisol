@@ -7,8 +7,6 @@ import CustomContainer from "../CustomContainer";
 function Header() {
     const router = useRouter();
 
-    console.log(router.pathname);
-
     const isDashboardRoute = router.pathname.startsWith("/dashboard");
 
     return (

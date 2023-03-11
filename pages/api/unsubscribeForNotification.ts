@@ -9,8 +9,8 @@ import {
 } from "@/lib/utils/api";
 import checkAuthentication from "@/middlewares/checkAuthentication";
 import connectToDatabase from "@/mongodb/connect";
-import { getUser, subscribeNotificationForUser } from "@/mongodb/utils/user";
-import { subscribeForNotificationApiBodySchema } from "@/lib/validators/subscribeForNotification";
+import { getUser, unsubscribeNotificationForUser } from "@/mongodb/utils/user";
+import { unsubscribeForNotificationApiBodySchema } from "@/lib/validators/subscribeForNotification";
 
 export default async function handler(
     req: NextApiRequest,
@@ -28,13 +28,13 @@ export default async function handler(
         }
 
         const bodyValidationResult =
-            subscribeForNotificationApiBodySchema.safeParse(req.body);
+            unsubscribeForNotificationApiBodySchema.safeParse(req.body);
 
         if (!bodyValidationResult.success) {
             return handleApiClientError(res);
         }
 
-        const { email, events, network } = bodyValidationResult.data;
+        const { network } = bodyValidationResult.data;
 
         await connectToDatabase();
 
@@ -44,11 +44,9 @@ export default async function handler(
             return handleApiAuthError(res);
         }
 
-        await subscribeNotificationForUser({
+        await unsubscribeNotificationForUser({
             user,
             walletAddress,
-            email,
-            events,
             network,
         });
 
@@ -56,12 +54,12 @@ export default async function handler(
             .status(200)
             .json(
                 successHandler(
-                    { walletAddress, email, events },
-                    "User successfully subscribed for email notifications!"
+                    { walletAddress },
+                    "User successfully unsubscribed for email notifications!"
                 )
             );
     } catch (error) {
-        console.log("/subscribeForNotification =>", error);
+        console.log("/unsubscribeForNotification =>", error);
         return handleApiRouteError(error, res);
     }
 }

@@ -20,10 +20,18 @@ export const subscribeForNotificationApiBodySchema = z.object({
     network: z.literal("devnet").or(z.literal("mainnet-beta")),
 });
 
+export const unsubscribeForNotificationApiBodySchema = z.object({
+    network: z.literal("devnet").or(z.literal("mainnet-beta")),
+});
+
 export type SubscribeForNotificationForm = z.infer<
     typeof subscribeForNotificationFormSchema
 >;
 
 export type SubscribeForNotificationApiBody = z.infer<
     typeof subscribeForNotificationApiBodySchema
+>;
+
+export type UnsubscribeForNotificationApiBody = z.infer<
+    typeof unsubscribeForNotificationApiBodySchema
 >;

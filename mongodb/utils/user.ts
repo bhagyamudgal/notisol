@@ -1,6 +1,6 @@
 import { Event, SolanaNetwork } from "@/lib/types";
-import { createCallback } from "@/lib/utils/shyft";
-import UserModel, { User } from "../models/users";
+import { createCallback, deleteCallback } from "@/lib/utils/shyft";
+import UserModel, { Events, User } from "../models/users";
 
 export const getUser = async (walletAddress: string) => {
     const user: User | null = await UserModel.findOne({
@@ -16,19 +16,31 @@ export const createUser = async (walletAddress: string) => {
     return user;
 };
 
+export const getEventsNetwork = (network: SolanaNetwork) => {
+    return network === "mainnet-beta" ? "mainnet" : "devnet";
+};
+
 export const subscribeNotificationForUser = async ({
+    user,
     walletAddress,
     email,
     events,
     network,
 }: {
+    user: User;
     walletAddress: string;
     email: string;
     events: Event[];
     network: SolanaNetwork;
 }) => {
+    const eventsNetwork = getEventsNetwork(network);
+
+    const newEvents = user.events;
+
+    newEvents[eventsNetwork] = events;
+
     const response = await createCallback({
-        callbackUrl: `https://9339-2401-4900-1c63-b25-e4bb-4296-bc5b-52f3.in.ngrok.io/api/notify/${walletAddress}`,
+        callbackUrl: `https://bde8-2401-4900-1c22-1711-6930-8055-2ef0-1442.in.ngrok.io/api/notify/${walletAddress}`,
         address: walletAddress,
         events,
         network,
@@ -38,9 +50,44 @@ export const subscribeNotificationForUser = async ({
         throw new Error("Failed to create callback!");
     }
 
-    const updatedUser = await UserModel.updateOne(
+    const updatedUser = await UserModel.findOneAndUpdate(
         { wallet: walletAddress },
-        { email, events },
+        { email, events: newEvents },
+        { new: true }
+    );
+
+    console.log({ response, updatedUser });
+
+    return updatedUser;
+};
+
+export const unsubscribeNotificationForUser = async ({
+    user,
+    walletAddress,
+    network,
+}: {
+    user: User;
+    walletAddress: string;
+    network: SolanaNetwork;
+}) => {
+    const eventsNetwork = getEventsNetwork(network);
+
+    const newEvents = user.events;
+
+    newEvents[eventsNetwork] = null;
+
+    const response = await deleteCallback({
+        address: walletAddress,
+        network,
+    });
+
+    if (!response.success) {
+        throw new Error("Failed to delete callback!");
+    }
+
+    const updatedUser = await UserModel.findOneAndUpdate(
+        { wallet: walletAddress },
+        { events: newEvents },
         { new: true }
     );
 

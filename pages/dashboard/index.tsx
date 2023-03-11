@@ -27,7 +27,11 @@ import {
 } from "@/components/common/ToastNotification";
 import { useRecoilValue } from "recoil";
 import { solanaNetworkState } from "@/store/auth";
-import { subscribeForNotification } from "@/lib/utils/api/user";
+import {
+    subscribeForNotification,
+    unsubscribeForNotification,
+} from "@/lib/utils/api/user";
+import { getEventsNetwork } from "@/mongodb/utils/user";
 
 export default function Dashboard() {
     const { isAuthenticated, user, refetchUser } = useAuth();
@@ -105,15 +109,39 @@ export default function Dashboard() {
     const unsubscribeHandler = async () => {
         setIsSubmitting(true);
         try {
+            const response = await unsubscribeForNotification({
+                network: solanaNetwork,
+            });
+
+            if (!response.success) {
+                throw new Error("Something went wrong while unsubscribing!");
+            }
+
+            refetchUser();
+
+            showSuccessToast({
+                id: "unsubscribe-notification",
+                description:
+                    "You have successfully unsubscribed to receive email notifications!",
+            });
         } catch (error) {
             console.error("unsubscribeHandler =>", error);
+            showErrorToast({
+                id: "unsubscribe-notification",
+                description:
+                    "Something went wrong while unsubscribing! Please try again.",
+            });
         }
         setIsSubmitting(false);
     };
 
     const RenderDashboard = () => {
+        const eventsNetwork = getEventsNetwork(solanaNetwork);
         if (isAuthenticated) {
-            if (!user?.events || user?.events?.length === 0) {
+            if (
+                !user?.events[eventsNetwork] ||
+                user?.events[eventsNetwork]?.length === 0
+            ) {
                 return (
                     <Box maxW="md" mx="auto" bg="gray.700" p={6} rounded="md">
                         <VStack

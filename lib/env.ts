@@ -13,3 +13,7 @@ export const SOLANA_MAINNET_RPC_URL =
 // server
 export const MONGODB_URI = process.env.MONGODB_URI;
 export const SHYFT_API_KEY = process.env.SHYFT_API_KEY;
+export const COURIER_API_KEY = process.env.COURIER_API_KEY;
+export const NOTIFICATION_SERVER_URL = process.env.NOTIFICATION_SERVER_URL;
+export const NOTIFICATION_SERVER_SECRET =
+    process.env.NOTIFICATION_SERVER_SECRET;

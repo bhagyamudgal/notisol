@@ -15,3 +15,11 @@ export enum Event {
     NFT_LIST_CANCEL = "NFT_LIST_CANCEL",
     MARKETPLACE_WITHDRAW = "MARKETPLACE_WITHDRAW",
 }
+
+export type Transaction = {
+    timestamp: string;
+    fee: number;
+    signature: string;
+    type: Event;
+    info: any;
+};

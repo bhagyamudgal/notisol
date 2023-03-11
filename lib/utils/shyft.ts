@@ -55,6 +55,38 @@ export const createCallback = async ({
     return result;
 };
 
+export const getTokenInfo = async ({
+    tokenAddress,
+    network,
+}: {
+    tokenAddress: string;
+    network: SolanaNetwork;
+}) => {
+    const response = await shyftInstance.get(
+        `/sol/v1/token/get_info?network=${network}&token_address=${tokenAddress}`
+    );
+
+    const result = await response.data;
+
+    return result;
+};
+
+export const getNftInfo = async ({
+    nftAddress,
+    network,
+}: {
+    nftAddress: string;
+    network: SolanaNetwork;
+}) => {
+    const response = await shyftInstance.get(
+        `/sol/v1/nft/read?network=${network}&token_address=${nftAddress}`
+    );
+
+    const result = await response.data;
+
+    return result;
+};
+
 export const signEncodedTransaction = async (
     encodedTx: string,
     network: SolanaNetwork

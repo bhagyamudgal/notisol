@@ -3,7 +3,6 @@ import CustomContainer from "@/components/common/CustomContainer";
 import {
     Box,
     Button,
-    Center,
     Heading,
     Image,
     Stack,

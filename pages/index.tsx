@@ -21,6 +21,12 @@ export default function Home() {
         <Box w="full" position="relative" overflow="hidden">
             <Head>
                 <title>Home | NotiSol</title>
+                <meta
+                    name="description"
+                    content="Stay on Top of Your Solana Wallet Activity with
+                            NotiSol. Get Multichannel Notifications for Your Solana
+                            Wallet Transactions"
+                />
             </Head>
 
             <EllipseGreen top="-94px" right="-200px" />

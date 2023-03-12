@@ -40,7 +40,7 @@ export const subscribeNotificationForUser = async ({
     newEvents[eventsNetwork] = events;
 
     const response = await createCallback({
-        callbackUrl: `https://bde8-2401-4900-1c22-1711-6930-8055-2ef0-1442.in.ngrok.io/api/notify?walletAddress=${walletAddress}&network=${network}`,
+        callbackUrl: `https://3760-2409-40d2-61-f540-4c84-46a-17e2-6a26.in.ngrok.io/api/notify?walletAddress=${walletAddress}&network=${network}`,
         address: walletAddress,
         events,
         network,

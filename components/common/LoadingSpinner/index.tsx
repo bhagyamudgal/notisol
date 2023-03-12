@@ -10,7 +10,7 @@ interface Props {
 function LoadingSpinner({
     loadingText,
     size = "xl",
-    color = "blue.400",
+    color = "rgba(189, 33, 221, 0.48)",
 }: Props) {
     return (
         <VStack spacing={4}>
@@ -28,6 +28,7 @@ function LoadingSpinner({
                     maxW="280px"
                     color={color}
                     fontWeight="medium"
+                    fontSize="lg"
                 >
                     {loadingText}
                 </Text>

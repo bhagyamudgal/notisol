@@ -1,3 +1,4 @@
+import { customGradient } from "@/theme";
 import { Center, Text } from "@chakra-ui/react";
 import React from "react";
 import LoadingSpinner from "../LoadingSpinner";
@@ -10,7 +11,8 @@ function AuthLoader() {
             left={0}
             bottom={0}
             right={0}
-            bg="gray.900"
+            bg="background.100"
+            bgGradient={customGradient["background-1"]}
             zIndex="overlay"
             flexDirection="column"
         >

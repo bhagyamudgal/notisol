@@ -20,7 +20,7 @@ function AuthButton() {
     }, [connected]); // eslint-disable-line
 
     return (
-        <Button as={WalletMultiButton} _hover={{ bg: "blue.600 !important" }}>
+        <Button as={WalletMultiButton}>
             {connected && publicKey
                 ? shortenWalletAddress(publicKey?.toString())
                 : "Connect Wallet"}

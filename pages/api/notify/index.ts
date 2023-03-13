@@ -8,8 +8,7 @@ import connectToDatabase from "@/mongodb/connect";
 import { getUser } from "@/mongodb/utils/user";
 import { getTransactionDescription } from "@/lib/utils/api/notify";
 import { notifyApiQuerySchema } from "@/lib/validators/notify";
-import axios from "axios";
-import { NOTIFICATION_SERVER_SECRET, NOTIFICATION_SERVER_URL } from "@/lib/env";
+import { sendEmail } from "@/lib/utils/courier";
 
 export default async function handler(
     req: NextApiRequest,
@@ -69,28 +68,14 @@ export default async function handler(
             throw new Error("No description found for this transaction!");
         }
 
-        let sendEmailResponse;
+        const requestId = await sendEmail({
+            email: user.email,
+            title: description.title,
+            body: description.message,
+        });
 
-        try {
-            sendEmailResponse = await axios.post(
-                `${NOTIFICATION_SERVER_URL}/sendEmail`,
-                {
-                    email: user.email,
-                    title: description.title,
-                    body: description.message,
-                },
-                { headers: { Authorization: NOTIFICATION_SERVER_SECRET } }
-            );
-        } catch (error) {
-            throw new Error("Failed to send email request to notify server!", {
-                cause: error,
-            });
-        }
-
-        const sendEmailResult = await sendEmailResponse.data;
-
-        if (!sendEmailResult.success) {
-            throw new Error("Notify server failed to send email!");
+        if (!requestId) {
+            throw new Error("Failed to send email!");
         }
 
         // console.log("Email sent successfully!");

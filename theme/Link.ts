@@ -4,7 +4,7 @@ const Link = defineStyleConfig({
     baseStyle: {
         _hover: {
             textDecoration: "none",
-            color: "primary.400",
+            color: "primary.100",
         },
     },
 });

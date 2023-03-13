@@ -34,6 +34,14 @@ function Layout({ children }: { children: ReactNode }) {
             minH="100dvh"
             w="full"
         >
+            <Head>
+                <link rel="icon" href="/favicon.ico" />
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1"
+                />
+            </Head>
+
             <Box visibility="hidden" h={0}>
                 <Script
                     strategy="afterInteractive"
@@ -55,13 +63,6 @@ function Layout({ children }: { children: ReactNode }) {
                     }}
                 />
             </Box>
-            <Head>
-                <link rel="icon" href="/favicon.ico" />
-                <meta
-                    name="viewport"
-                    content="width=device-width, initial-scale=1"
-                />
-            </Head>
 
             {router.pathname !== "/" && <Header />}
 

@@ -18,7 +18,7 @@ import Footer from "@/components/common/Footer";
 
 export default function Home() {
     return (
-        <Box w="full" position="relative" overflow="hidden">
+        <Box w="full" position="relative" overflow="hidden" m="0 !important">
             <Head>
                 <title>Home | NotiSol</title>
                 <meta

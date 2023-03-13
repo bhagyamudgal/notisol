@@ -69,15 +69,21 @@ export default async function handler(
             throw new Error("No description found for this transaction!");
         }
 
-        const sendEmailResponse = await axios.post(
-            `${NOTIFICATION_SERVER_URL}/sendEmail`,
-            {
-                email: user.email,
-                title: description.title,
-                body: description.message,
-            },
-            { headers: { Authorization: NOTIFICATION_SERVER_SECRET } }
-        );
+        let sendEmailResponse;
+
+        try {
+            sendEmailResponse = await axios.post(
+                `${NOTIFICATION_SERVER_URL}/sendEmail`,
+                {
+                    email: user.email,
+                    title: description.title,
+                    body: description.message,
+                },
+                { headers: { Authorization: NOTIFICATION_SERVER_SECRET } }
+            );
+        } catch (error) {
+            throw new Error("Failed to send email!");
+        }
 
         const sendEmailResult = await sendEmailResponse.data;
 

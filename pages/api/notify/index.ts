@@ -82,7 +82,9 @@ export default async function handler(
                 { headers: { Authorization: NOTIFICATION_SERVER_SECRET } }
             );
         } catch (error) {
-            throw new Error("Failed to send email request to notify server!");
+            throw new Error("Failed to send email request to notify server!", {
+                cause: error,
+            });
         }
 
         const sendEmailResult = await sendEmailResponse.data;

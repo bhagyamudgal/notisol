@@ -109,12 +109,25 @@ export default function Home() {
                 </Box>
 
                 {/* features */}
-                <VStack py={32} spacing={20}>
+                <VStack py={{ base: 4, sm: 10, md: 16, lg: 28 }} spacing={20}>
                     {/* feature-1 */}
-                    <Stack direction="row" spacing={10}>
-                        <Image src="/images/features-1.png" alt="feature-1" />
+                    <Stack
+                        direction={{ base: "column", md: "row" }}
+                        alignItems={{ base: "center", md: "flex-start" }}
+                        spacing={{ base: 5, md: 10 }}
+                    >
+                        <Image
+                            src="/images/features-1.png"
+                            alt="feature-1"
+                            w="full"
+                            maxW={{ base: "300px", md: "400px" }}
+                        />
 
-                        <VStack alignItems="flex-start">
+                        <VStack
+                            p={0}
+                            alignItems={{ base: "center", md: "flex-start" }}
+                            textAlign={{ base: "center", md: "left" }}
+                        >
                             <Heading as="h2" size="xl">
                                 Stay Up-to-Date
                             </Heading>
@@ -127,8 +140,23 @@ export default function Home() {
                     </Stack>
 
                     {/* feature-2 */}
-                    <Stack direction="row" spacing={10}>
-                        <VStack alignItems="flex-start">
+                    <Stack
+                        direction={{ base: "column", md: "row" }}
+                        alignItems={{ base: "center", md: "flex-start" }}
+                        spacing={{ base: 5, md: 10 }}
+                    >
+                        <Image
+                            display={{ base: "block", md: "none" }}
+                            src="/images/features-2.png"
+                            alt="feature-2"
+                            w="full"
+                            maxW={{ base: "300px", md: "400px" }}
+                        />
+
+                        <VStack
+                            alignItems={{ base: "center", md: "flex-start" }}
+                            textAlign={{ base: "center", md: "left" }}
+                        >
                             <Heading as="h2" size="xl">
                                 Multichannel Notifications
                             </Heading>
@@ -139,14 +167,32 @@ export default function Home() {
                             </Text>
                         </VStack>
 
-                        <Image src="/images/features-2.png" alt="feature-2" />
+                        <Image
+                            display={{ base: "none", md: "block" }}
+                            src="/images/features-2.png"
+                            alt="feature-2"
+                            w="full"
+                            maxW={{ base: "300px", md: "400px" }}
+                        />
                     </Stack>
 
                     {/* feature-3 */}
-                    <Stack direction="row" spacing={10}>
-                        <Image src="/images/features-3.png" alt="feature-3" />
+                    <Stack
+                        direction={{ base: "column", md: "row" }}
+                        alignItems={{ base: "center", md: "flex-start" }}
+                        spacing={{ base: 5, md: 10 }}
+                    >
+                        <Image
+                            src="/images/features-3.png"
+                            alt="feature-3"
+                            w="full"
+                            maxW={{ base: "300px", md: "400px" }}
+                        />
 
-                        <VStack alignItems="flex-start">
+                        <VStack
+                            alignItems={{ base: "center", md: "flex-start" }}
+                            textAlign={{ base: "center", md: "left" }}
+                        >
                             <Heading as="h2" size="xl">
                                 Easy to Use
                             </Heading>
@@ -159,8 +205,23 @@ export default function Home() {
                     </Stack>
 
                     {/* feature-4 */}
-                    <Stack direction="row" spacing={10}>
-                        <VStack alignItems="flex-start">
+                    <Stack
+                        direction={{ base: "column", md: "row" }}
+                        alignItems={{ base: "center", md: "flex-start" }}
+                        spacing={{ base: 5, md: 10 }}
+                    >
+                        <Image
+                            display={{ base: "block", md: "none" }}
+                            src="/images/features-4.png"
+                            alt="feature-4"
+                            w="full"
+                            maxW={{ base: "300px", md: "400px" }}
+                        />
+
+                        <VStack
+                            alignItems={{ base: "center", md: "flex-start" }}
+                            textAlign={{ base: "center", md: "left" }}
+                        >
                             <Heading as="h2" size="xl">
                                 Customizable
                             </Heading>
@@ -171,7 +232,13 @@ export default function Home() {
                             </Text>
                         </VStack>
 
-                        <Image src="/images/features-4.png" alt="feature-4" />
+                        <Image
+                            display={{ base: "none", md: "block" }}
+                            src="/images/features-4.png"
+                            alt="feature-4"
+                            w="full"
+                            maxW={{ base: "300px", md: "400px" }}
+                        />
                     </Stack>
                 </VStack>
             </CustomContainer>

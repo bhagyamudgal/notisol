@@ -23,7 +23,7 @@ export default async function handler(
         const queryValidationResult = notifyApiQuerySchema.safeParse(req.query);
 
         if (!queryValidationResult.success) {
-            console.log("/notify =>", "Invalid query params!");
+            // console.log("/notify =>", "Invalid query params!");
             return handleApiClientError(res);
         }
 
@@ -55,7 +55,7 @@ export default async function handler(
             info: body.actions[0]?.info,
         };
 
-        console.log(walletAddress, network, transaction);
+        // console.log(walletAddress, network, transaction);
 
         const description = await getTransactionDescription({
             walletAddress,
@@ -63,7 +63,7 @@ export default async function handler(
             transaction,
         });
 
-        console.log(description);
+        // console.log(description);
 
         if (!description) {
             throw new Error("No description found for this transaction!");
@@ -85,11 +85,11 @@ export default async function handler(
             throw new Error("Failed to send email!");
         }
 
-        console.log("Email sent successfully!");
+        // console.log("Email sent successfully!");
 
         return res.status(200).json({ success: true });
     } catch (error) {
-        console.log("/notify =>", error);
+        console.error("/notify =>", error);
         return handleApiRouteError(error, res);
     }
 }

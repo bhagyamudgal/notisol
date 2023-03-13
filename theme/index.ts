@@ -3,7 +3,11 @@ import Link from "./Link";
 import Button from "./Button";
 
 const colors = {
-    primary: {},
+    primary: {
+        100: "#BD21DD",
+        200: "rgba(255, 255, 255, 0.24)",
+        500: "#BD21DD",
+    },
     heading: { 1: "#FFFFFF", 2: "#CECECE" },
     background: { 100: "#1E1E1E" },
 };

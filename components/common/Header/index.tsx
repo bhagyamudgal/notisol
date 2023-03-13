@@ -35,8 +35,13 @@ function Header() {
                         {isDashboardRoute ? (
                             <AuthButton />
                         ) : (
-                            <Button as={NextLink} href="/dashboard">
-                                Go To Dashboard
+                            <Button
+                                as={NextLink}
+                                href="/dashboard"
+                                border="1px"
+                                borderColor="primary.200"
+                            >
+                                Dashboard
                             </Button>
                         )}
                     </HStack>

@@ -50,6 +50,7 @@ export default function Dashboard() {
     const {
         handleSubmit,
         register,
+        reset,
         formState: { errors },
     } = useForm<SubscribeForNotificationForm>({
         resolver: zodResolver(subscribeForNotificationFormSchema),
@@ -91,6 +92,8 @@ export default function Dashboard() {
             }
 
             refetchUser();
+
+            reset(defaultValues);
 
             showSuccessToast({
                 id: "subscribe-notification",
@@ -140,92 +143,111 @@ export default function Dashboard() {
     const RenderDashboard = () => {
         const eventsNetwork = getEventsNetwork(solanaNetwork);
         if (isAuthenticated) {
-            // if (
-            //     !user?.events[eventsNetwork] ||
-            //     user?.events[eventsNetwork]?.length === 0
-            // ) {
-            //     return (
-            //         <Box maxW="md" mx="auto" bg="gray.700" p={6} rounded="md">
-            //             <VStack
-            //                 spacing={4}
-            //                 as="form"
-            //                 onSubmit={handleSubmit(submitHandler)}
-            //                 noValidate
-            //             >
-            //                 <FormControl
-            //                     isInvalid={errors?.email ? true : false}
-            //                 >
-            //                     <FormLabel htmlFor="email">
-            //                         Email Address
-            //                     </FormLabel>
-            //                     <Input
-            //                         id="email"
-            //                         type="email"
-            //                         placeholder="Please enter your email address"
-            //                         {...register("email")}
-            //                     />
-            //                     <FormErrorMessage>
-            //                         {errors?.email?.message}
-            //                     </FormErrorMessage>
-            //                 </FormControl>
-            //                 <FormControl>
-            //                     <FormLabel>Events Type</FormLabel>
-            //                     <Box>
-            //                         <Checkbox
-            //                             id="solTransfer"
-            //                             {...register("solTransfer")}
-            //                         >
-            //                             SOL Transfer
-            //                         </Checkbox>
-            //                     </Box>
-            //                     <Box>
-            //                         <Checkbox
-            //                             id="splTokenTransfer"
-            //                             {...register("splTokenTransfer")}
-            //                         >
-            //                             SPL Token Transfer
-            //                         </Checkbox>
-            //                     </Box>
-            //                     <Box>
-            //                         <Checkbox
-            //                             id="nftTransfer"
-            //                             {...register("nftTransfer")}
-            //                         >
-            //                             NFT Transfer
-            //                         </Checkbox>
-            //                     </Box>
-            //                 </FormControl>
-            //                 <Button type="submit" isLoading={isSubmitting}>
-            //                     Send me notifications
-            //                 </Button>
-            //             </VStack>
-            //         </Box>
-            //     );
-            // } else {
-            //     return (
-            //         <Box maxW="md" mx="auto" bg="gray.700" p={6} rounded="md">
-            //             <VStack spacing={4}>
-            //                 <Text>You have subscribed for notifications!</Text>
-            //                 <Button
-            //                     onClick={unsubscribeHandler}
-            //                     isLoading={isSubmitting}
-            //                 >
-            //                     Unsubscribe
-            //                 </Button>
-            //             </VStack>
-            //         </Box>
-            //     );
-            // }
+            if (
+                !user?.events[eventsNetwork] ||
+                user?.events[eventsNetwork]?.length === 0
+            ) {
+                return (
+                    <Box
+                        maxW="lg"
+                        mx="auto"
+                        bg="background.100"
+                        p={6}
+                        rounded="md"
+                    >
+                        <VStack
+                            spacing={4}
+                            as="form"
+                            onSubmit={handleSubmit(submitHandler)}
+                            noValidate
+                        >
+                            <FormControl
+                                isInvalid={errors?.email ? true : false}
+                            >
+                                <FormLabel htmlFor="email">
+                                    Email Address
+                                </FormLabel>
+                                <Input
+                                    focusBorderColor="primary.100"
+                                    id="email"
+                                    type="email"
+                                    placeholder="Please enter your email address"
+                                    {...register("email")}
+                                    _placeholder={{ color: "purple.100" }}
+                                />
+                                <FormErrorMessage>
+                                    {errors?.email?.message}
+                                </FormErrorMessage>
+                            </FormControl>
+                            <FormControl>
+                                <FormLabel>Events Type</FormLabel>
+                                <Box>
+                                    <Checkbox
+                                        id="solTransfer"
+                                        {...register("solTransfer")}
+                                        colorScheme="primary"
+                                    >
+                                        SOL Transfer
+                                    </Checkbox>
+                                </Box>
+                                <Box>
+                                    <Checkbox
+                                        id="splTokenTransfer"
+                                        {...register("splTokenTransfer")}
+                                        colorScheme="primary"
+                                    >
+                                        SPL Token Transfer
+                                    </Checkbox>
+                                </Box>
+                                <Box>
+                                    <Checkbox
+                                        id="nftTransfer"
+                                        {...register("nftTransfer")}
+                                        colorScheme="primary"
+                                    >
+                                        NFT Transfer
+                                    </Checkbox>
+                                </Box>
+                            </FormControl>
+                            <Button type="submit" isLoading={isSubmitting}>
+                                Send me notifications
+                            </Button>
+                        </VStack>
+                    </Box>
+                );
+            } else {
+                return (
+                    <Box
+                        maxW="lg"
+                        mx="auto"
+                        bg="background.100"
+                        p={6}
+                        rounded="md"
+                    >
+                        <VStack spacing={4}>
+                            <Text fontSize="lg">
+                                You have subscribed for notifications!
+                            </Text>
+                            <Button
+                                onClick={unsubscribeHandler}
+                                isLoading={isSubmitting}
+                            >
+                                Unsubscribe
+                            </Button>
+                        </VStack>
+                    </Box>
+                );
+            }
 
-            return (
-                <Box maxW="lg" mx="auto" bg="gray.700" py={10} rounded="md">
-                    <Center>
-                        <Heading as="h1" size="2xl">
-                            Coming Soon!
-                        </Heading>
-                    </Center>
-                </Box>
-            );
+            // return (
+            //     <Box maxW="lg" mx="auto" bg="gray.700" py={10} rounded="md">
+            //         <Center>
+            //             <Heading as="h1" size="2xl">
+            //                 Coming Soon!
+            //             </Heading>
+            //         </Center>
+            //     </Box>
+            // );
         } else {
             return (
                 <Text fontSize="lg" align="center" fontWeight="medium">

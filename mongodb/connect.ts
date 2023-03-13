@@ -1,4 +1,4 @@
-import mongoose, { Mongoose } from "mongoose";
+import mongoose, { ConnectOptions, Mongoose } from "mongoose";
 import { MONGODB_URI } from "@/lib/env";
 
 declare global {
@@ -25,11 +25,12 @@ async function connectToDatabase() {
     }
 
     if (!cached.promise) {
-        const opts = {
+        const opts: ConnectOptions = {
             dbName: "notisol",
             bufferCommands: false,
             retryWrites: true,
-            autoCreate: true,
+            autoCreate: false,
+            autoIndex: false,
         };
 
         cached.promise = mongoose

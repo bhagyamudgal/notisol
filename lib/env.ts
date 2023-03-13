@@ -9,6 +9,7 @@ export const SOLANA_DEVNET_RPC_URL =
     process.env.NEXT_PUBLIC_SOLANA_DEVNET_RPC_URL;
 export const SOLANA_MAINNET_RPC_URL =
     process.env.NEXT_PUBLIC_SOLANA_MAINNET_RPC_URL;
+export const CALLBACK_API_URL = process.env.NEXT_PUBLIC_CALLBACK_API_URL;
 
 // server
 export const MONGODB_URI = process.env.MONGODB_URI;

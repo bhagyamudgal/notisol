@@ -61,7 +61,7 @@ export default async function handler(
                 )
             );
     } catch (error) {
-        console.log("/subscribeForNotification =>", error);
+        console.error("/subscribeForNotification =>", error);
         return handleApiRouteError(error, res);
     }
 }

@@ -35,7 +35,7 @@ function Header() {
                         {isDashboardRoute ? (
                             <AuthButton />
                         ) : (
-                            <Button as={Link} href="/dashboard">
+                            <Button as={NextLink} href="/dashboard">
                                 Go To Dashboard
                             </Button>
                         )}

@@ -38,6 +38,7 @@ function Footer() {
                     spacing={8}
                     justifyContent="center"
                     fontSize="4xl"
+                    mb={2}
                 >
                     <Link
                         href="https://twitter.com/notisolxyz"
@@ -55,6 +56,19 @@ function Footer() {
                         <Icon as={BsGithub} />
                     </Link>
                 </HStack>
+                <Link
+                    href="https://forms.gle/fAgbE1HqTh3utkXE8"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <Text
+                        textAlign="center"
+                        fontSize="lg"
+                        textDecoration="underline"
+                    >
+                        Feedback Form
+                    </Text>
+                </Link>
             </CustomContainer>
         </Box>
     );

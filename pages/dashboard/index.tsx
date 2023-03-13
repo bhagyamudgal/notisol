@@ -10,6 +10,7 @@ import {
     FormLabel,
     Heading,
     Input,
+    Link,
     Text,
     VStack,
 } from "@chakra-ui/react";
@@ -264,6 +265,38 @@ export default function Dashboard() {
             </Head>
 
             <RenderDashboard />
+
+            {isAuthenticated && (
+                <Box
+                    maxW="lg"
+                    mx="auto"
+                    bg="background.100"
+                    p={6}
+                    rounded="md"
+                    my={20}
+                >
+                    <VStack>
+                        <Text textAlign="center" fontSize="lg">
+                            Your feedback matters! Please take a moment to fill
+                            out this feedback form.
+                        </Text>
+
+                        <Link
+                            href="https://forms.gle/fAgbE1HqTh3utkXE8"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <Text
+                                textAlign="center"
+                                fontSize="lg"
+                                textDecoration="underline"
+                            >
+                                Click Here
+                            </Text>
+                        </Link>
+                    </VStack>
+                </Box>
+            )}
         </CustomContainer>
     );
 }

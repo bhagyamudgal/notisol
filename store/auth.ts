@@ -1,8 +1,13 @@
 import { atom } from "recoil";
-import { DEFAULT_SOLANA_NETWORK } from "@/lib/env";
-import { SolanaNetwork } from "@/lib/types";
+import { User } from "@/mongodb/models/users";
 
-export const solanaNetworkState = atom<SolanaNetwork>({
-    key: "solana-network",
-    default: DEFAULT_SOLANA_NETWORK,
+export type AuthState = {
+    isAuthenticated: boolean;
+    isAuthenticating: boolean;
+    user: User | null;
+};
+
+export const authState = atom<AuthState>({
+    key: "auth",
+    default: { isAuthenticated: false, isAuthenticating: false, user: null },
 });

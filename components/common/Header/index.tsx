@@ -1,9 +1,18 @@
-import { Box, Button, HStack, Text, Link, Image } from "@chakra-ui/react";
+import {
+    Box,
+    Button,
+    HStack,
+    Text,
+    Link,
+    Image,
+    Stack,
+} from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import AuthButton from "../AuthButton";
 import CustomContainer from "../CustomContainer";
 import NoSSR from "../NoSSR";
+import SolanaNetworkSelector from "../SolanaNetworkSelector";
 
 function Header() {
     const router = useRouter();
@@ -33,7 +42,13 @@ function Header() {
                         </Link>
 
                         {isDashboardRoute ? (
-                            <AuthButton />
+                            <Stack
+                                direction={{ base: "column", md: "row" }}
+                                spacing={4}
+                            >
+                                <SolanaNetworkSelector />
+                                <AuthButton />
+                            </Stack>
                         ) : (
                             <Button
                                 as={NextLink}

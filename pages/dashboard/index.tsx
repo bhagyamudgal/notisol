@@ -28,7 +28,7 @@ import {
     showSuccessToast,
 } from "@/components/common/ToastNotification";
 import { useRecoilValue } from "recoil";
-import { solanaNetworkState } from "@/store/auth";
+import { solanaNetworkState } from "@/store/solana";
 import {
     subscribeForNotification,
     unsubscribeForNotification,

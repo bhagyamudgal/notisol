@@ -1,4 +1,4 @@
-import { Box, Button, HStack, Text, Link } from "@chakra-ui/react";
+import { Box, Button, HStack, Text, Link, Image } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import AuthButton from "../AuthButton";
@@ -16,13 +16,20 @@ function Header() {
                 <CustomContainer>
                     <HStack justifyContent="space-between" py={1}>
                         <Link as={NextLink} href="/" zIndex={10}>
-                            <Text
-                                fontWeight="semibold"
-                                fontSize="2xl"
-                                color="heading.1"
-                            >
-                                NotiSol
-                            </Text>
+                            <HStack>
+                                <Image
+                                    src="/images/notisol-logo.png"
+                                    alt="Notisol Logo"
+                                    height={42}
+                                />
+                                <Text
+                                    fontWeight="semibold"
+                                    fontSize="2xl"
+                                    color="heading.1"
+                                >
+                                    NotiSol
+                                </Text>
+                            </HStack>
                         </Link>
 
                         {isDashboardRoute ? (

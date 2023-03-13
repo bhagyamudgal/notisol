@@ -8,8 +8,7 @@ import connectToDatabase from "@/mongodb/connect";
 import { getUser } from "@/mongodb/utils/user";
 import { getTransactionDescription } from "@/lib/utils/api/notify";
 import { notifyApiQuerySchema } from "@/lib/validators/notify";
-import axios from "axios";
-import { NOTIFICATION_SERVER_SECRET, NOTIFICATION_SERVER_URL } from "@/lib/env";
+import { sendEmail } from "@/lib/utils/courier";
 
 export default async function handler(
     req: NextApiRequest,
@@ -23,7 +22,7 @@ export default async function handler(
         const queryValidationResult = notifyApiQuerySchema.safeParse(req.query);
 
         if (!queryValidationResult.success) {
-            console.log("/notify =>", "Invalid query params!");
+            // console.log("/notify =>", "Invalid query params!");
             return handleApiClientError(res);
         }
 
@@ -55,7 +54,7 @@ export default async function handler(
             info: body.actions[0]?.info,
         };
 
-        console.log(walletAddress, network, transaction);
+        // console.log(walletAddress, network, transaction);
 
         const description = await getTransactionDescription({
             walletAddress,
@@ -63,33 +62,27 @@ export default async function handler(
             transaction,
         });
 
-        console.log(description);
+        // console.log(description);
 
         if (!description) {
             throw new Error("No description found for this transaction!");
         }
 
-        const sendEmailResponse = await axios.post(
-            `${NOTIFICATION_SERVER_URL}/sendEmail`,
-            {
-                email: user.email,
-                title: description.title,
-                body: description.message,
-            },
-            { headers: { Authorization: NOTIFICATION_SERVER_SECRET } }
-        );
+        const requestId = await sendEmail({
+            email: user.email,
+            title: description.title,
+            body: description.message,
+        });
 
-        const sendEmailResult = await sendEmailResponse.data;
-
-        if (!sendEmailResult.success) {
+        if (!requestId) {
             throw new Error("Failed to send email!");
         }
 
-        console.log("Email sent successfully!");
+        // console.log("Email sent successfully!");
 
         return res.status(200).json({ success: true });
     } catch (error) {
-        console.log("/notify =>", error);
+        console.error("/notify =>", error);
         return handleApiRouteError(error, res);
     }
 }

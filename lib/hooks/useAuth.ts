@@ -1,5 +1,5 @@
 import { useRecoilState, useResetRecoilState } from "recoil";
-import { authState } from "@/store/solana";
+import { authState } from "@/store/auth";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { createSolanaAuthMessage } from "../utils/web3auth";
 import { getAuthenticatedUser } from "../utils/api/user";

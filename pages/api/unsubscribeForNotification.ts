@@ -59,7 +59,7 @@ export default async function handler(
                 )
             );
     } catch (error) {
-        console.log("/unsubscribeForNotification =>", error);
+        console.error("/unsubscribeForNotification =>", error);
         return handleApiRouteError(error, res);
     }
 }

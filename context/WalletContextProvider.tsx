@@ -8,7 +8,7 @@ import { PhantomWalletAdapter } from "@solana/wallet-adapter-wallets";
 import { useMemo } from "react";
 import "@solana/wallet-adapter-react-ui/styles.css";
 import { useRecoilValue } from "recoil";
-import { solanaNetworkState } from "@/store/auth";
+import { solanaNetworkState } from "@/store/solana";
 import { getSolanaRpcUrl } from "@/lib/utils/solana";
 
 type Props = { children: ReactNode };

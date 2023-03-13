@@ -1,6 +1,7 @@
+import { CALLBACK_API_URL } from "@/lib/env";
 import { Event, SolanaNetwork } from "@/lib/types";
 import { createCallback, deleteCallback } from "@/lib/utils/shyft";
-import UserModel, { Events, User } from "../models/users";
+import UserModel, { User } from "../models/users";
 
 export const getUser = async (walletAddress: string) => {
     const user: User | null = await UserModel.findOne({
@@ -40,7 +41,7 @@ export const subscribeNotificationForUser = async ({
     newEvents[eventsNetwork] = events;
 
     const response = await createCallback({
-        callbackUrl: `https://3760-2409-40d2-61-f540-4c84-46a-17e2-6a26.in.ngrok.io/api/notify?walletAddress=${walletAddress}&network=${network}`,
+        callbackUrl: `${CALLBACK_API_URL}/api/notify?walletAddress=${walletAddress}&network=${network}`,
         address: walletAddress,
         events,
         network,
@@ -56,7 +57,7 @@ export const subscribeNotificationForUser = async ({
         { new: true }
     );
 
-    console.log({ response, updatedUser });
+    // console.log({ response, updatedUser });
 
     return updatedUser;
 };

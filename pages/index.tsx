@@ -102,7 +102,15 @@ export default function Home() {
                             Wallet Transactions
                         </Text>
 
-                        <Button size="lg" as={Link} href="/dashboard">
+                        <Button
+                            size="lg"
+                            as={Link}
+                            href="/dashboard"
+                            border="1px"
+                            borderColor="primary.200"
+                            backdropFilter="auto"
+                            backdropBlur="2px"
+                        >
                             Get Started
                         </Button>
                     </VStack>

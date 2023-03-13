@@ -41,7 +41,7 @@ export default async function handler(
             .status(200)
             .json(successHandler(user, "User fetched successfully!"));
     } catch (error) {
-        console.log("/getUser =>", error);
+        console.error("/getUser =>", error);
         return handleApiRouteError(error, res);
     }
 }

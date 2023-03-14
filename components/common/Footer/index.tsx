@@ -49,7 +49,7 @@ function Footer() {
                     </Link>
 
                     <Link
-                        href="https://github.com/notisolxyz"
+                        href="https://github.com/bhagyamudgal/notisol"
                         target="_blank"
                         rel="noopener noreferrer"
                     >

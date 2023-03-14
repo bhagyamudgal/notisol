@@ -39,7 +39,7 @@ export const getTransactionDescription = async ({
 
         const response = await getTokenInfo({ tokenAddress, network });
 
-        let tokenInfo = { name: "Unknown", symbol: "Unknown" };
+        let tokenInfo = null;
 
         const result = response.result;
 
@@ -53,11 +53,21 @@ export const getTransactionDescription = async ({
         let message = null;
 
         if (isReceiver) {
-            title = `${tokenInfo.name} (${tokenInfo.symbol}) SPL-Token Received`;
-            message = `You received ${amount} ${tokenInfo.symbol} from ${sender} on solana ${network}`;
+            if (tokenInfo) {
+                title = `${tokenInfo.name} (${tokenInfo.symbol}) Solana Token Received`;
+                message = `You received ${amount} ${tokenInfo.name} (${tokenInfo.symbol}) token from ${sender} on solana ${network}`;
+            } else {
+                title = `Unknown Solana Token Received`;
+                message = `You received ${amount} Unknown token from ${sender} on solana ${network}`;
+            }
         } else {
-            title = `${tokenInfo.name} (${tokenInfo.symbol}) SPL-Token Sent`;
-            message = `You sent ${amount} ${tokenInfo.symbol} to ${receiver} on solana ${network}`;
+            if (tokenInfo) {
+                title = `Unknown Solana NFT Sent`;
+                message = `You sent ${amount} ${tokenInfo.name} (${tokenInfo.symbol}) token to ${receiver} on solana ${network}`;
+            } else {
+                title = `Unknown Solana Token Sent`;
+                message = `You sent ${amount} Unknown solana token to ${receiver} on solana ${network}`;
+            }
         }
 
         return { title, message };
@@ -71,7 +81,7 @@ export const getTransactionDescription = async ({
 
         const response = await getNftInfo({ nftAddress, network });
 
-        let nftInfo = { name: "Unknown", symbol: "Unknown" };
+        let nftInfo = null;
 
         const result = response.result;
 
@@ -85,11 +95,21 @@ export const getTransactionDescription = async ({
         let message = null;
 
         if (isReceiver) {
-            title = `${nftInfo.name} NFT Received`;
-            message = `You received ${amount} ${nftInfo.name} from ${sender} on solana ${network}`;
+            if (nftInfo) {
+                title = `${nftInfo.name} NFT Received`;
+                message = `You received ${amount} ${nftInfo.name} NFT from ${sender} on solana ${network}`;
+            } else {
+                title = `Unknown NFT Received`;
+                message = `You received Unknown NFT from ${sender} on solana ${network}`;
+            }
         } else {
-            title = `${nftInfo.name} NFT Sent`;
-            message = `You sent ${amount} ${nftInfo.name} to ${receiver} on solana ${network}`;
+            if (nftInfo) {
+                title = `${nftInfo.name} NFT Sent`;
+                message = `You sent ${amount} ${nftInfo.name} NFT to ${receiver} on solana ${network}`;
+            } else {
+                title = `Unknown NFT Sent`;
+                message = `You sent Unknown NFT to ${receiver} on solana ${network}`;
+            }
         }
 
         return { title, message };

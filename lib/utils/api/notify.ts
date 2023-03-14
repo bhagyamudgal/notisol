@@ -62,7 +62,7 @@ export const getTransactionDescription = async ({
             }
         } else {
             if (tokenInfo) {
-                title = `Unknown Solana NFT Sent`;
+                title = `${tokenInfo.name} (${tokenInfo.symbol}) Solana Token Sent`;
                 message = `You sent ${amount} ${tokenInfo.name} (${tokenInfo.symbol}) token to ${receiver} on solana ${network}`;
             } else {
                 title = `Unknown Solana Token Sent`;

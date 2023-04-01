@@ -6,12 +6,15 @@ export type Events = {
     mainnet: Event[] | null;
 };
 
+export type CallbackId = { devnet: string | null; mainnet: string | null };
+
 export type User = {
     _id: string;
     name: string | null;
     wallet: string;
     email: string | null;
     events: Events;
+    callbackId: CallbackId;
 };
 
 const eventsSchema = new Schema<Events>(
@@ -30,6 +33,20 @@ const eventsSchema = new Schema<Events>(
     { _id: false }
 );
 
+const callbackIdSchema = new Schema<CallbackId>(
+    {
+        devnet: {
+            type: String,
+            default: null,
+        },
+        mainnet: {
+            type: String,
+            default: null,
+        },
+    },
+    { _id: false }
+);
+
 const userSchema = new Schema<User>(
     {
         name: { type: String, default: null },
@@ -37,6 +54,10 @@ const userSchema = new Schema<User>(
         email: { type: String, default: null },
         events: {
             type: eventsSchema,
+            default: { devnet: null, mainnet: null },
+        },
+        callbackId: {
+            type: callbackIdSchema,
             default: { devnet: null, mainnet: null },
         },
     },

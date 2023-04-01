@@ -16,3 +16,4 @@ export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 export const MONGODB_URI = process.env.MONGODB_URI;
 export const SHYFT_API_KEY = process.env.SHYFT_API_KEY;
 export const COURIER_API_KEY = process.env.COURIER_API_KEY;
+export const APP_SECRET = process.env.APP_SECRET;

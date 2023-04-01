@@ -37,6 +37,7 @@ export const subscribeNotificationForUser = async ({
     const eventsNetwork = getEventsNetwork(network);
 
     const newEvents = user.events;
+    const newCallbackId = user.callbackId;
 
     newEvents[eventsNetwork] = events;
 
@@ -47,13 +48,25 @@ export const subscribeNotificationForUser = async ({
         network,
     });
 
+    console.log("shyft create callback response =>", response);
+
     if (!response.success) {
         throw new Error("Failed to create callback!");
     }
 
+    const callbackId = response?.result?.id;
+
+    if (!callbackId) {
+        throw new Error(
+            "Failed to create callback as no callbackId was found!"
+        );
+    }
+
+    newCallbackId[eventsNetwork] = callbackId;
+
     const updatedUser = await UserModel.findOneAndUpdate(
         { wallet: walletAddress },
-        { email, events: newEvents },
+        { email, events: newEvents, callbackId: newCallbackId },
         { new: true }
     );
 
@@ -74,21 +87,31 @@ export const unsubscribeNotificationForUser = async ({
     const eventsNetwork = getEventsNetwork(network);
 
     const newEvents = user.events;
+    const newCallbackId = user.callbackId;
 
     newEvents[eventsNetwork] = null;
 
-    const response = await deleteCallback({
-        address: walletAddress,
-        network,
-    });
+    const callbackId = newCallbackId[eventsNetwork];
+
+    if (!callbackId) {
+        throw new Error(
+            "Failed to delete callback as no callback was register!"
+        );
+    }
+
+    const response = await deleteCallback(callbackId);
+
+    console.log("shyft delete callback response =>", response);
 
     if (!response.success) {
         throw new Error("Failed to delete callback!");
     }
 
+    newCallbackId[eventsNetwork] = null;
+
     const updatedUser = await UserModel.findOneAndUpdate(
         { wallet: walletAddress },
-        { events: newEvents },
+        { events: newEvents, callbackId: newCallbackId },
         { new: true }
     );
 

@@ -14,15 +14,17 @@ const shyftInstance = axios.create({
     },
 });
 
-export const deleteCallback = async ({
-    address,
-    network,
-}: {
-    address: string;
-    network: SolanaNetwork;
-}) => {
+export const getAllCallbacks = async () => {
+    const response = await shyftInstance.get("/sol/v1/callback/list");
+
+    const result = await response.data;
+
+    return result;
+};
+
+export const deleteCallback = async (callbackId: string) => {
     const response = await shyftInstance.delete("/sol/v1/callback/remove", {
-        data: { address, network },
+        data: { id: callbackId },
     });
 
     const result = await response.data;

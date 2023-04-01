@@ -143,11 +143,9 @@ export default function Dashboard() {
 
     const RenderDashboard = () => {
         const eventsNetwork = getEventsNetwork(solanaNetwork);
+
         if (isAuthenticated) {
-            if (
-                !user?.events[eventsNetwork] ||
-                user?.events[eventsNetwork]?.length === 0
-            ) {
+            if (!user?.callbackId[eventsNetwork]) {
                 return (
                     <Box
                         maxW="lg"

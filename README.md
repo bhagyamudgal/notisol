@@ -14,7 +14,7 @@ The multi-channel notification service for all your Solana wallet activity. Get 
 
 ## Demo
 
-https://www.loom.com/share/4e83e0eb28ad4802bbf68139eeaa7b67
+https://www.loom.com/share/3206e918615344d9973bb0339d6b27e1
 
 ## Authors
 
